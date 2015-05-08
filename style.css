@@ -1,6 +1,13 @@
 body {
-  
-}
-h1 {
+  text-align: center;
+  background: url('http://farm3.staticflickr.com/2254/3539234752_267af3d486_z.jpg');
+  background-image: no repeat;
+  }
 
+.location {
+  text-align: center;
+}
+
+.box_result {
+  text-align: center;
 }
