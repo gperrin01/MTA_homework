@@ -21,7 +21,7 @@ $(document).ready(function() {
 var setUpEventListeners = function() {
   $('#line_start').on('change', displayDestinationStart);
   $('#line_end').on('change', displayDestinationEnd);
-  // this could be grouped into one function
+  // Could this be grouped into one function?
   $('#click_result').on('click', displayJourney)
 } // End event listenrers
 
@@ -43,7 +43,7 @@ function displayDestinationStart() {
   })
 }
 function displayDestinationEnd() {
-  $('#station_end').children().remove();
+  $('#station_end').empty();
   $('#station_end').append('<option>Please select</option>');
   var hereLine = $('#line_end').val();
   Mta[hereLine].forEach(function(MtaStop){
@@ -76,10 +76,8 @@ function calcJourney(init_line, init_stop, end_line, end_stop){
     nstops = nstops_init_line + nstops_end_line;
     storeInLocalStorage(init_line, init_stop, end_line, end_stop);
     return ('Your trip takes ' + nstops +' stops.\nYou start with '+nstops_init_line+ ' stops on the '+init_line +'.\nYou change at ' +intersection+'.\nYou end with '+nstops_end_line+ ' stops on the '+end_line+ '.');
-  }
-  
+  }  
 }
-
 function findIntersection(line1, line2) {
     return line1.filter(function(item) {
       return ( $.inArray(item, line2) != -1 );
@@ -89,6 +87,8 @@ function numberStops(line, stop1, stop2){
   // return Math.abs( Mta[line].indexOf(stop1) - Mta[line].indexOf(stop2) );
   return Math.abs( $.inArray(stop1, Mta[line]) - $.inArray(stop2, Mta[line]) );
 }
+
+
 function storeInLocalStorage(init_line, init_stop, end_line, end_stop) {
   var journeyStore;
   countTrips++;
