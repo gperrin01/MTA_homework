@@ -1,5 +1,5 @@
 // function intersection  - was writting jScript indexOF on JQ ELEMENT!!!
-// $('.class').onClick -> impact ALL with class or only the one we click on?
+// When defining event listeners, will using $(.class) impact ALL items with that class, or only the one(s) impacted by the event
 var Mta = {
   'line N': ['times square_N', '34th_N', '28th_N', '23rd_N', 'union square', '8th_N'],
   'line L': ['8th_L', '6th_L', 'union square', '3rd_L', '1st_L'],
@@ -52,9 +52,9 @@ function displayDestinationEnd() {
 }
 function displayJourney() {
   init_line = $('#line_start').val();
-  init_stop = $('#station_start'); 
-  end_line = $('#station_end');
-  end_stop = $('#station_end'); 
+  init_stop = $('#station_start').val(); 
+  end_line = $('#station_end').val();
+  end_stop = $('#station_end').val(); 
   $('#display_result').text(calcJourney(init_line, init_stop, end_line, end_stop));
 }
 
@@ -63,6 +63,7 @@ function calcJourney(init_line, init_stop, end_line, end_stop){
   var nstops;
   if (init_line === end_line) {
     nstops = numberStops(init_line, init_stop, end_stop);
+    storeInLocalStorage(init_line, init_stop, end_line, end_stop);
     return ('Your trip takes ' + nstops +'stops.\nYou stay on the same line');
     // sould it be $('#display_result').val() = your trop takes?
   }
@@ -73,9 +74,10 @@ function calcJourney(init_line, init_stop, end_line, end_stop){
     var nstops_init_line = numberStops(init_line, init_stop, intersection);
     var nstops_end_line = numberStops(end_line, end_stop, intersection);
     nstops = nstops_init_line + nstops_end_line;
+    storeInLocalStorage(init_line, init_stop, end_line, end_stop);
     return ('Your trip takes ' + nstops +' stops.\nYou start with '+nstops_init_line+ ' stops on the '+init_line +'.\nYou change at ' +intersection+'.\nYou end with '+nstops_end_line+ ' stops on the '+end_line+ '.');
   }
-  storeInLocalStorage(init_line, init_stop, end_line, end_stop); 
+  
 }
 
 function findIntersection(line1, line2) {
@@ -89,13 +91,14 @@ function numberStops(line, stop1, stop2){
 }
 function storeInLocalStorage(init_line, init_stop, end_line, end_stop) {
   var journeyStore;
-  if (countTrips === 0) {
-    journeyStore = { 'from':[init_line, init_stop], 
+  countTrips++;
+  var journeyStore = { 'from':[init_line, init_stop], 
                       'to': [end_line, end_stop] 
                     };
-    stringJourneyStore = JSON.stringify(journeyStore);
-    localStorage.setItem('journey', stringJourney);
-  }
+  stringJourneyStore = JSON.stringify(journeyStore);
+  localStorage.setItem('countTrips', countTrips)
+  var tripN = 'Trip_'+countTrips
+  localStorage.setItem(tripN, stringJourneyStore);
 }
 
 
