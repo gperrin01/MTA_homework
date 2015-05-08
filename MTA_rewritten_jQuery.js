@@ -10,6 +10,8 @@ var init_stop;
 var end_line; 
 var end_stop; 
 
+var countTrips = localStorage.getItem('countTrips') || 0;
+
 // DOC READY
 $(document).ready(function() {
   createDropdowns();
@@ -72,8 +74,10 @@ function calcJourney(init_line, init_stop, end_line, end_stop){
     var nstops_end_line = numberStops(end_line, end_stop, intersection);
     nstops = nstops_init_line + nstops_end_line;
     return ('Your trip takes ' + nstops +' stops.\nYou start with '+nstops_init_line+ ' stops on the '+init_line +'.\nYou change at ' +intersection+'.\nYou end with '+nstops_end_line+ ' stops on the '+end_line+ '.');
-  } 
+  }
+  storeInLocalStorage(init_line, init_stop, end_line, end_stop); 
 }
+
 function findIntersection(line1, line2) {
     return line1.filter(function(item) {
       return ( $.inArray(item, line2) != -1 );
@@ -82,6 +86,16 @@ function findIntersection(line1, line2) {
 function numberStops(line, stop1, stop2){
   // return Math.abs( Mta[line].indexOf(stop1) - Mta[line].indexOf(stop2) );
   return Math.abs( $.inArray(stop1, Mta[line]) - $.inArray(stop2, Mta[line]) );
+}
+function storeInLocalStorage(init_line, init_stop, end_line, end_stop) {
+  var journeyStore;
+  if (countTrips === 0) {
+    journeyStore = { 'from':[init_line, init_stop], 
+                      'to': [end_line, end_stop] 
+                    };
+    stringJourneyStore = JSON.stringify(journeyStore);
+    localStorage.setItem('journey', stringJourney);
+  }
 }
 
 
